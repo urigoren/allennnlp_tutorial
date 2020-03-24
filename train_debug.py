@@ -1,17 +1,19 @@
-import json, shutil, sys
-
+import json, shutil, sys, os
 from allennlp.commands import main
 
-config_file = "experiments/demo.jsonnet"
+experiment_name = "demo"
 
-CUDA_LAUNCH_BLOCKING=1
-serialization_dir = "output"
+config_file = "experiments/{e}.jsonnet".format(e=experiment_name)
+serialization_dir = "target/{e}".format(e=experiment_name)
+
+if not os.path.exists("target"):
+    os.mkdir("target")
 
 # Assemble the command into sys.argv
 sys.argv = [
     "allennlp",  # command name, not used by main
     "train", config_file,
-    "-s", "output",
+    "-s", serialization_dir,
     "--include-package", "src",
 ]
 
